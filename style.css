@@ -1,0 +1,647 @@
+/* Import Google Font: Public Sans (example) */
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;700&display=swap');
+
+/* Basic Reset & Global Styles */
+:root {
+    --color-primary: hsl(233, 26%, 24%); /* Dark Blue */
+    --color-secondary: hsl(136, 65%, 51%); /* Lime Green */
+    --color-tertiary: hsl(192, 70%, 51%); /* Bright Cyan */
+    --color-grayish-blue: hsl(233, 8%, 62%); /* Grayish Blue */
+    --color-light-grayish-blue: hsl(220, 16%, 96%); /* Light Grayish Blue */
+    --color-very-light-gray: hsl(0, 0%, 98%); /* Very Light Gray */
+    --color-white: hsl(0, 0%, 100%);
+
+    --font-family: 'Public Sans', sans-serif;
+    --font-size-body: 18px;
+    --font-size-small: 16px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-body);
+    line-height: 1.6;
+    color: var(--color-grayish-blue);
+    background-color: var(--color-very-light-gray);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+a {
+    text-decoration: none;
+    color: var(--color-grayish-blue);
+    transition: color 0.3s ease;
+}
+
+a:hover, a:focus {
+    color: var(--color-primary); /* Example hover color */
+    outline: none; /* Remove default focus outline */
+}
+
+button {
+    background: linear-gradient(to right, var(--color-secondary), var(--color-tertiary));
+    /* Add a subtle shadow for depth */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    /* Add a slight transform for tactile feel */
+    transform: translateY(0);
+    color: var(--color-white);
+    padding: 12px 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover, button:focus {
+    opacity: 0.8; /* Slightly less opaque on hover */
+    outline: none;
+    transform: translateY(-2px); /* Lift button slightly */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+}
+
+h1, h2, h3 {
+    color: var(--color-primary);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: var(--color-white);
+    position: sticky; /* Make header sticky */
+    top: 0; /* Stick to the top */
+    z-index: 1000;
+}
+
+.header .logo img {
+    height: 26px; /* Adjust as needed */
+}
+
+.main-nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    font-size: var(--font-size-small);
+    padding: 0.5rem 0;
+}
+
+.nav-links a {
+    position: relative; /* For the underline effect */
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0; /* Start with no width */
+    height: 4px; /* Underline thickness */
+    background: linear-gradient(to right, var(--color-secondary), var(--color-tertiary));
+    transition: width 0.3s ease; /* Smooth transition for width */
+}
+
+.nav-links a:hover::after,
+.nav-links a:focus::after {
+    width: 100%; /* Expand to full width on hover/focus */
+}
+
+.nav-button {
+    margin-left: 2rem;
+    white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.hamburger-menu {
+    display: none; /* Hidden by default on desktop */
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    position: relative;
+    z-index: 1001; /* Ensure it's above the overlay */
+}
+
+.hamburger-menu .bar {
+    display: block;
+    width: 26px;
+    height: 3px;
+    background-color: var(--color-primary);
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+/* Mobile Navigation Overlay */
+.main-nav.active {
+    display: flex; /* Show on mobile when active */
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Overlay effect */
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.main-nav.active .nav-links {
+    flex-direction: column;
+    background-color: var(--color-white);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 300px;
+    text-align: center;
+}
+
+.main-nav.active .nav-links li {
+    margin-bottom: 1rem;
+}
+
+.main-nav.active .nav-links a {
+    color: var(--color-primary);
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.main-nav.active .nav-button {
+    display: none; /* Hide desktop button in mobile menu */
+}
+
+/* Hamburger menu animation for active state */
+.hamburger-menu.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.hamburger-menu.active .bar:nth-child(2) {
+    opacity: 0;
+}
+.hamburger-menu.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+
+/* Hero Section */
+.hero-section {
+    display: flex;
+    flex-direction: column; /* Stack on mobile */
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    /* Subtle gradient background for hero section */
+    background-image: linear-gradient(to bottom, var(--color-very-light-gray), var(--color-light-grayish-blue));
+    position: relative;
+    overflow: hidden; /* For background image positioning */
+}
+
+.hero-content {
+    padding-bottom: 2rem;
+    z-index: 10;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    margin-bottom: 2rem;
+    font-size: var(--font-size-small);
+}
+
+.tight-text {
+    margin: 10;          
+    line-height: 1.8;   
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+}
+
+.hero-button{
+    margin: 50px;
+}
+
+.hero-image {
+    position: relative;
+    width: 100%;
+    max-width: 600px; /* Adjust as needed */
+    /* Removed negative margin-top to prevent overlap on mobile */
+    z-index: 0;
+}
+
+/* Features Section */
+.features-section {
+    background-color: var(--color-light-grayish-blue);
+    padding: 4rem 1.5rem;
+    text-align: center;
+    justify-content: center;
+    align-items: center
+}
+
+.icon-image {
+  height: 72px;
+  width: auto;
+  flex-shrink: 0;  
+  padding-left: 60px;          /* Prevents the icon from getting squished */
+}
+
+.features-section h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.features-intro {
+    max-width: 600px;
+    margin: 0 auto 3rem auto;
+    font-size: var(--font-size-small);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.feature-item {
+    background-color: var(--color-white); /* Card background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 5px 15px rgba(22, 22, 22, 0.596); /* Subtle shadow */
+    text-align: center;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for smooth animation */
+}
+
+.feature-item:hover {
+    transform: translateY(-5px); /* Lift the card slightly on hover */
+    box-shadow: 0 8px 25px rgba(22, 22, 22, 0.65); /* More pronounced shadow on hover */
+}
+
+.feature-item img {
+    margin: 0 auto 1.5rem auto;
+    height: 72px; /* Example icon size */
+}
+
+.feature-item h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+.feature-item p {
+    font-size: var(--font-size-small);
+}
+
+/* Articles Section */
+.articles-section {
+    background-color: var(--color-very-light-gray);
+    padding: 4rem 1.5rem;
+    text-align: center;
+}
+
+.articles-section h1 {
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+.articles-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column on mobile */
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.article-card {
+    background-color: var(--color-white);
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: left;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Slightly more pronounced shadow */
+    transition: transform 0.3s ease;
+}
+
+.article-card:hover {
+    transform: translateY(-5px);
+}
+
+.article-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12); /* More pronounced shadow on hover */
+}
+
+.article-card img {
+    width: 100%;
+    height: 200px; /* Fixed height for article images */
+    object-fit: cover;
+}
+
+.article-content {
+    padding: 1.5rem;
+}
+
+.article-content small {
+    font-size: 0.75rem;
+    color: var(--color-grayish-blue);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.article-content h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+}
+
+.article-content h3 a {
+    color: var(--color-primary);
+}
+
+.article-content h3 a:hover {
+    color: var(--color-secondary);
+}
+
+.article-content p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 3rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Stack on mobile */
+    gap: 2rem;
+    align-items: center;
+}
+
+.footer .logo img {
+    filter: brightness(0) invert(1); /* Make logo white */
+    margin-bottom: 1.5rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.social-links img {
+    height: 20px;
+    transition: filter 0.3s ease;
+}
+
+.social-links a:hover img {
+    filter: invert(60%) sepia(80%) saturate(400%) hue-rotate(80deg) brightness(100%) contrast(100%); /* Lime green hover */
+}
+
+.footer-nav-links {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.footer-nav-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-nav-links a {
+    color: var(--color-white);
+    font-size: var(--font-size-small);
+}
+
+.footer-nav-links a:hover {
+    color: var(--color-secondary);
+}
+
+.footer-button {
+    margin-bottom: 1.5rem;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    color: var(--color-grayish-blue);
+}
+
+/* Desktop / Tablet Styles */
+@media (min-width: 768px) {
+    .header {
+        padding: 1rem 3rem;
+    }
+
+    .hamburger-menu {
+        display: none; /* Hide hamburger on larger screens */
+    }
+
+    .main-nav {
+        display: flex; /* Ensure nav is visible on desktop */
+        position: static;
+        background-color: transparent;
+        height: auto;
+        width: auto;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .main-nav.active { /* Reset active state for desktop */
+        position: static;
+        background-color: transparent;
+        height: auto;
+        width: auto;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .nav-links a::after {
+        height: 2px; /* Thinner underline on desktop */
+    }
+
+    .main-nav.active .nav-links {
+        background-color: transparent;
+        box-shadow: none;
+        width: auto;
+        padding: 0;
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .main-nav.active .nav-links li {
+        margin-bottom: 0;
+    }
+
+    .main-nav.active .nav-links a {
+        color: var(--color-grayish-blue);
+        font-size: var(--font-size-small);
+    }
+
+    .main-nav.active .nav-button {
+        display: block;
+    }
+
+    .hero-section {
+        flex-direction: row; /* Side-by-side on desktop */
+        text-align: left;
+        padding: 5rem 3rem 0 3rem; /* Adjust padding for desktop */
+        min-height: 600px;
+        justify-content: space-between;
+    }
+
+    .hero-content {
+        flex: 1;
+        padding-right: 2rem;
+        padding-bottom: 0;
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+    }
+
+    .hero-image {
+        flex: 1;
+        margin-top: 0;
+        position: absolute; /* Position absolutely for background effect */
+        right: -15%; /* Adjust to move image off-screen slightly */
+        top: -10%;
+        max-width: 700px; /* Larger image */
+    }
+
+    .hero-image img {
+        width: 100%;
+    }
+
+    .features-section {
+        padding: 6rem 3rem;
+        text-align: left;
+    }
+
+    .features-section h1 {
+        font-size: 2.5rem;
+    }
+
+    .features-intro {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on tablet */
+        text-align: left;
+    }
+
+    .feature-item img {
+        margin-left: 0;
+    }
+
+    .articles-section {
+        padding: 6rem 3rem;
+        text-align: left;
+    }
+
+    .articles-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on tablet */
+    }
+
+    .footer {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 3rem 3rem;
+        text-align: left;
+    }
+
+    .footer-col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-col.right-align {
+        align-items: flex-end;
+    }
+
+    .footer .logo {
+        margin-bottom: 3rem;
+    }
+
+    .social-links {
+        margin-bottom: 0;
+    }
+
+    .footer-nav-links {
+        margin-bottom: 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header {
+        padding: 1rem 5rem;
+    }
+
+    .hero-section {
+        padding: 5rem 5rem 0 5rem;
+    }
+
+    .hero-content h1 {
+        font-size: 4rem;
+    }
+
+    .hero-image {
+        right: -10%;
+        top: -15%;
+        max-width: 800px;
+    }
+
+    .features-section {
+        padding: 6rem 5rem;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(4, 1fr); /* Four columns on desktop */
+    }
+
+    .articles-section {
+        padding: 6rem 5rem;
+    }
+
+    .articles-grid {
+        grid-template-columns: repeat(4, 1fr); /* Four columns on desktop */
+    }
+
+    .footer {
+        padding: 3rem 5rem;
+    }
+}
